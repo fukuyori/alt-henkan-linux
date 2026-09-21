@@ -1,8 +1,9 @@
 # Alt Henkan (Linux 版)
 
 Alt Henkan は、左右の Alt キーを単独で押したときに追加の役割を与える常駐プログラムです。
-Windows 版 ([alt-henkan](../../csharp/alt-henkan)) の入力変換ロジックを Linux へ移植し、
-ミドルドラッグでウィンドウを動かす [wmv](../../csharp/wmv) の機能も取り込んでいます。
+Windows 版 ([alt-henkan](https://github.com/fukuyori/alt-henkan)) の入力変換ロジックを Linux へ
+移植し、ミドルドラッグでウィンドウを動かす [wmv](https://github.com/fukuyori/wmv) の機能も
+取り込んでいます。
 
 - 左 Alt を単押し: IME をオフにする
 - 右 Alt を単押し: IME をオンにする
@@ -73,7 +74,9 @@ journalctl --user -u alt-henkan.service -f
 ### IME の設定
 
 `[ime]` の `backend` で切り替え方法を選びます。`--test-ime` で実際に切り替わるか
-確認できます。
+確認できます。設定ウィンドウの `表示設定` タブからも選べます。
+
+![表示設定タブ](images/screenshot4.png)
 
 ```sh
 alt-henkan --test-ime
@@ -141,6 +144,8 @@ ibus へ戻ります。`dist/setup-fcitx5.sh` は次の 3 つを直接設定し�
 設定ウィンドウは `Alt設定`・`Emacs設定`・`ウィンドウ移動`・`表示設定` の 4 タブで、
 変更するとその場で保存します。常駐している本体が 2 秒以内に読み直すので、再起動は不要です。
 
+![Alt設定タブ](images/screenshot1.png)
+
 設定ファイル (`~/.config/alt-henkan/config.toml`) を直接編集しても構いません。
 書き戻すときはコメントと並びを保つので、説明を書き足しても消えません。設定項目の
 説明は [`dist/config.example.toml`](dist/config.example.toml) にあります。
@@ -170,6 +175,8 @@ systemctl --user restart alt-henkan.service
 | しきい値 (既定 4px) を超えずに離す | 本来のクリックを送り直す |
 
 使うボタンは `button` で選べます (既定は中ボタン)。
+
+![ウィンドウ移動タブ](images/screenshot3.png)
 
 | 値 | ボタン |
 |---|---|
@@ -262,6 +269,8 @@ Wayland には他のアプリのウィンドウを動かす API がありませ�
 Emacs モードでも文字・数字・記号の入力は通常どおりです。次の 13 種類の移動・削除
 ショートカットのみ変換し、それぞれを `[emacs.shortcuts]` で個別に ON / OFF できます
 (各操作の既定値は ON)。
+
+![Emacs設定タブ](images/screenshot2.png)
 
 | キー | 操作（送信するキー） |
 |---|---|
