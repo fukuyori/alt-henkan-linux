@@ -1,0 +1,21 @@
+[Unit]
+Description=Alt Henkan - 左右の Alt キーの単押しで IME を切り替える
+Documentation=https://github.com/
+PartOf=graphical-session.target
+After=graphical-session.target
+
+[Service]
+Type=simple
+ExecStart=%h/.local/bin/alt-henkan
+Restart=on-failure
+RestartSec=2
+# 入力デバイスと uinput 以外は触らせない。
+PrivateTmp=yes
+ProtectSystem=strict
+ProtectHome=read-only
+# トレイの「有効」は設定ファイルへも書き戻すので、設定ディレクトリだけ書き込みを許す。
+ReadWritePaths=%h/.config/alt-henkan
+NoNewPrivileges=yes
+
+[Install]
+WantedBy=graphical-session.target

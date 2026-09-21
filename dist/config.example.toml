@@ -1,0 +1,101 @@
+# Alt Henkan の設定。$XDG_CONFIG_HOME/alt-henkan/config.toml (既定では
+# ~/.config/alt-henkan/config.toml) に置く。保存すると 2 秒以内に読み直す。
+
+# false にすると Alt 変換と Emacs 機能の両方を止める。
+enabled = true
+
+# Alt を単独で長押しして離したとき、本来の Alt (メニューバーのフォーカスなど) を送る。
+left-alt-long-press = true
+right-alt-long-press = true
+
+# 長押しと判定するまでの時間 (ミリ秒)。200〜3000 に丸められる。
+long-press-ms = 600
+
+# モードを切り替えたときにデスクトップ通知を出す。
+show-mode-notification = true
+
+[ime]
+# IME の切り替え手段。
+#   "fcitx5" … D-Bus (org.fcitx.Fcitx.Controller1) の Activate / Deactivate を呼ぶ
+#   "ibus"   … `ibus engine <名前>` で入力ソースを切り替える
+#               (GNOME の Super+Space と同じ操作)
+#   "none"   … IME を操作しない (Alt の検出だけ試したいとき用)
+backend = "fcitx5"
+
+# backend = "ibus" のときに使う入力ソース名。`ibus list-engine` で確認できる。
+ibus-engine-on = "mozc-jp"
+ibus-engine-off = "xkb:us::eng"
+
+[emacs]
+# CapsLock による Emacs モードの切り替えを有効にする。
+enabled = false
+
+# 起動時のモード。"normal" または "emacs"。
+initial-mode = "normal"
+
+# 変換の対象にする修飾キーの側。"both" / "left" / "right"。
+control-side = "both"
+alt-side = "both"
+
+[emacs.shortcuts]
+control-b = true    # 左へ移動
+control-f = true    # 右へ移動
+control-p = true    # 上へ移動
+control-n = true    # 下へ移動
+control-a = true    # 行頭へ移動 (Home)
+control-e = true    # 行末へ移動 (End)
+alt-b = true        # 前の単語へ移動 (Ctrl+左)
+alt-f = true        # 次の単語へ移動 (Ctrl+右)
+alt-less = true     # 文書の先頭へ移動 (Ctrl+Home)
+alt-greater = true  # 文書の末尾へ移動 (Ctrl+End)
+control-d = true    # カーソル位置の文字を削除 (Delete)
+alt-d = true        # 次の単語を削除 (Ctrl+Delete)
+control-k = true    # 行末まで削除 (Shift+End -> Delete)
+
+[window-move]
+# マウスのミドルドラッグでウィンドウを動かす。
+#   ミドルドラッグ         → ウィンドウを移動
+#   Shift + ミドルドラッグ → ウィンドウをリサイズ
+#   動かさずに離した       → 本来のミドルクリックを送り直す
+# ON / OFF の切り替えにはマウスの占有し直しが必要なので、常駐の再起動が要る。
+#   systemctl --user restart alt-henkan.service
+enabled = false
+
+# ドラッグに使うマウスボタン。
+#   "middle" / "right" / "side" / "extra" / "forward" / "back" / "task" / "btn0"
+# 左ボタンは操作不能になるため使えない (指定しても middle に戻す)。
+button = "middle"
+
+# 一覧に無いボタンを使いたいときは、生のコードをここに入れる (0 で使わない)。
+# `alt-henkan --watch-input` で押したときに出る番号をそのまま指定できる。
+# 例: BTN_SIDE (275) なら 275。この指定は button より優先する。
+button-code = 0
+
+# ドラッグと判定する移動量 (ピクセル)。1〜64 に丸められる。
+drag-threshold = 4
+
+# リサイズに使う修飾キー。"shift" / "ctrl" / "alt" / "none"。
+# "none" にするとリサイズを使わず、常に移動になる。
+resize-modifier = "shift"
+
+# ウィンドウマネージャーが「修飾キー+ドラッグ」に使っている修飾キー。
+#   "auto"  … GNOME の org.gnome.desktop.wm.preferences mouse-button-modifier から読む
+#   "alt" / "super" … 直接指定する
+wm-modifier = "auto"
+
+# 修飾キーを押してからボタンを押すまでの待ち時間 (ミリ秒)。0〜200。
+modifier-delay-ms = 30
+
+# マウスごとの上書き。ボタンの構成はマウスによって違うので、台ごとに割り当てられる。
+# name はデバイス名の一部で、大文字小文字は区別しない。前から順に、最初に一致した
+# ものを使う。デバイス名は `alt-henkan --list-devices` で確認できる。
+# 設定ウィンドウの「ウィンドウ移動」タブでは、つながっているマウスごとに、
+# そのマウスが実際に持っているボタンだけを選べる。
+#
+# [[window-move.devices]]
+# name = "ELECOM"
+# button = "forward"
+#
+# [[window-move.devices]]
+# name = "Razer"
+# button-code = 275

@@ -1,0 +1,11 @@
+[Desktop Entry]
+Type=Application
+Name=Alt Henkan の設定
+GenericName=Alt Henkan Settings
+Comment=左右の Alt キーの単押しで IME を切り替える常駐プログラムの設定
+Exec=alt-henkan-settings
+Icon=input-keyboard
+Terminal=false
+Categories=Settings;DesktopSettings;
+Keywords=IME;Alt;keyboard;alt-henkan;
+StartupNotify=true

@@ -1,0 +1,16 @@
+[Unit]
+Description=Set input method environment for fcitx5 (override GNOME's ibus defaults)
+Documentation=man:dbus-update-activation-environment(1)
+# gnome-shell は入力ソースの設定に関係なく XMODIFIERS と QT_IM_MODULE を ibus で
+# 上書きする。gnome-shell の初期化が終わってから設定し直す。
+After=gnome-session-initialized.target
+PartOf=graphical-session.target
+
+[Service]
+Type=oneshot
+RemainAfterExit=yes
+ExecStart=/usr/bin/systemctl --user set-environment GTK_IM_MODULE=fcitx QT_IM_MODULE=fcitx "QT_IM_MODULES=wayland;fcitx" XMODIFIERS=@im=fcitx SDL_IM_MODULE=fcitx
+ExecStart=/usr/bin/dbus-update-activation-environment --systemd GTK_IM_MODULE=fcitx QT_IM_MODULE=fcitx "QT_IM_MODULES=wayland;fcitx" XMODIFIERS=@im=fcitx SDL_IM_MODULE=fcitx
+
+[Install]
+WantedBy=graphical-session.target

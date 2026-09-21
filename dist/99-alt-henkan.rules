@@ -1,0 +1,5 @@
+# Alt Henkan が /dev/uinput へ仮想キーボードを作れるようにする。
+# /dev/input/event* は Ubuntu では既に root:input 0660 なので、input グループに
+# 入っていれば読み取れる。念のため同じ設定を明示しておく。
+KERNEL=="uinput", SUBSYSTEM=="misc", GROUP="input", MODE="0660", OPTIONS+="static_node=uinput"
+KERNEL=="event*", SUBSYSTEM=="input", GROUP="input", MODE="0660"

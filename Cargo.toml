@@ -1,0 +1,32 @@
+[package]
+name = "alt-henkan"
+version = "0.1.0"
+edition = "2024"
+
+[lib]
+name = "alt_henkan"
+path = "src/lib.rs"
+
+[[bin]]
+name = "alt-henkan"
+path = "src/main.rs"
+
+# 設定ウィンドウ。GTK4 を使うのはこのバイナリだけで、常駐する本体には入らない。
+[[bin]]
+name = "alt-henkan-settings"
+path = "src/settings.rs"
+required-features = ["settings"]
+
+[features]
+default = ["settings"]
+settings = ["dep:gtk"]
+
+[dependencies]
+anyhow = "1"
+evdev = "0.13"
+gtk = { version = "0.11", package = "gtk4", optional = true }
+ksni = { version = "0.3", default-features = false, features = ["async-io", "blocking"] }
+serde = { version = "1", features = ["derive"] }
+toml = "1"
+toml_edit = "0.25"
+zbus = { version = "5", features = ["blocking-api"] }
