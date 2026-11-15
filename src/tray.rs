@@ -7,7 +7,7 @@ use std::sync::mpsc::Sender;
 
 use ksni::blocking::{Handle, TrayMethods};
 use ksni::menu::{CheckmarkItem, StandardItem};
-use ksni::{MenuItem, ToolTip};
+use ksni::{MenuItem, OfflineReason, ToolTip};
 
 use crate::message::Message;
 
@@ -123,16 +123,35 @@ impl ksni::Tray for Tray {
         // アイコンのクリックで設定を開く (Windows 版のダブルクリックに相当)。
         self.send(Message::OpenSettings);
     }
+
+    fn watcher_online(&self) {
+        crate::info!("通知領域が使えるようになりました。アイコンを表示します。");
+    }
+
+    fn watcher_offline(&self, reason: OfflineReason) -> bool {
+        match reason {
+            OfflineReason::Error(error) => crate::info!(
+                "通知領域のアイコンをまだ表示できません ({error})。\
+                 GNOME では AppIndicator 系の拡張機能が必要です。使えるようになるまで待ちます。"
+            ),
+            _ => crate::info!("通知領域が無くなりました。戻るまで待ちます。"),
+        }
+        // 止めずに待ち、通知領域が現れたら ksni に登録し直させる。
+        true
+    }
 }
 
-/// トレイを登録する。表示できる環境が無ければ `None` を返し、本体は常駐を続ける。
+/// トレイを登録する。D-Bus に繋がらないなど登録の見込みが無ければ `None` を返し、
+/// 本体は常駐を続ける。
+///
+/// ログイン直後は GNOME の拡張機能より先に起動することがあるので、通知領域がまだ
+/// 無いだけなら失敗にせず、現れた時点で登録する。
 pub fn spawn(tray: Tray) -> Option<Handle<Tray>> {
-    match tray.spawn() {
+    match tray.assume_sni_available(true).spawn() {
         Ok(handle) => Some(handle),
         Err(error) => {
             crate::info!(
-                "通知領域のアイコンを表示できません ({error})。\
-                 GNOME では AppIndicator 系の拡張機能が必要です。常駐は続けます。"
+                "通知領域のアイコンを表示できません ({error})。常駐は続けます。"
             );
             None
         }
