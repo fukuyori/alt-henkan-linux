@@ -15,7 +15,7 @@
 #   /usr/lib/modules-load.d/         alt-henkan.conf (uinput)
 #   /usr/share/applications/         alt-henkan-settings.desktop
 #   /usr/share/alt-henkan/           setup-fcitx5.sh, im-fcitx5-env.service
-#   /usr/share/doc/alt-henkan/       README.md, images/, config.example.toml
+#   /usr/share/doc/alt-henkan/       README.md, images/, config.example.toml, copyright
 set -euo pipefail
 
 repo="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
@@ -98,6 +98,7 @@ install -D -m 0644 "${repo}/dist/im-fcitx5-env.service" \
 doc="${root}/usr/share/doc/${package}"
 install -D -m 0644 "${repo}/README.md" "${doc}/README.md"
 install -D -m 0644 "${repo}/dist/config.example.toml" "${doc}/config.example.toml"
+install -D -m 0644 "${repo}/LICENSE" "${doc}/copyright"
 install -d "${doc}/images"
 install -m 0644 "${repo}"/images/* "${doc}/images/"
 
