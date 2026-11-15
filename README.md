@@ -314,6 +314,12 @@ cargo test
 (`sudo apt install libgtk-4-dev`)。GTK を使うのは `alt-henkan-settings` だけで、
 常駐する本体には入りません。
 
+deb パッケージは `./scripts/package.sh` で作れます (`dpkg-deb` が必要)。
+`target/package/alt-henkan_<バージョン>_<アーキテクチャ>.deb` ができるので、
+`sudo apt install ./target/package/alt-henkan_*.deb` で入れます。`dist/install.sh` と違って
+`/usr` へ配置し、サービスの有効化は行いません。入れた後に表示される案内に従って
+`systemctl --user enable --now alt-henkan.service` を実行してください。
+
 入力変換のロジックは `src/engine.rs` に OS 呼び出しを含まない状態機械としてまとめてあり、
 `tests/engine.rs` と `tests/window_move.rs` がキー入力・マウス操作の並びと出力を検証します。
 実際のデバイスや uinput は使いません。
